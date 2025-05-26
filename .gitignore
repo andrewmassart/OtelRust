@@ -73,3 +73,21 @@ yarn-error.log
 !.yarn/releases
 !.yarn/sdks
 !.yarn/versions
+
+# VS Code
+.vscode/
+
+# Rust
+rust-core/target/
+rust-core/Cargo.lock
+*.pdb
+
+# cxx.rs generated files (these get regenerated during build)
+rust-core/target/cxx/
+
+# Rust build artifacts
+**/*.a
+**/*.lib
+**/*.so
+**/*.dylib
+**/*.dll

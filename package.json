@@ -1,5 +1,5 @@
 {
-  "name": "OtelRust",
+  "name": "react-native-otel-rust",
   "version": "0.0.1",
   "private": true,
   "scripts": {
@@ -8,6 +8,14 @@
     "lint": "eslint .",
     "start": "react-native start",
     "test": "jest"
+  },
+  "codegenConfig": {
+    "name": "AppSpecs",
+    "type": "modules",
+    "jsSrcsDir": "specs",
+    "android": {
+      "javaPackageName": "com.otelrust.specs"
+    }
   },
   "dependencies": {
     "react": "19.0.0",

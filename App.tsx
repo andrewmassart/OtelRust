@@ -1,124 +1,109 @@
-import type { PropsWithChildren } from 'react'
+// App.tsx
+import React, { useState } from 'react'
 import {
-  ScrollView,
-  StatusBar,
+  SafeAreaView,
   StyleSheet,
   Text,
-  useColorScheme,
   View,
+  Button,
+  Alert,
 } from 'react-native'
 
-import {
-  Colors,
-  DebugInstructions,
-  Header,
-  LearnMoreLinks,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen'
-
-type SectionProps = PropsWithChildren<{
-  title: string;
-}>
-
-function Section({ children, title }: SectionProps): React.JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark'
-  return (
-    <View style={styles.sectionContainer}>
-      <Text
-        style={[
-          styles.sectionTitle,
-          {
-            color: isDarkMode ? Colors.white : Colors.black,
-          },
-        ]}
-      >
-        {title}
-      </Text>
-      <Text
-        style={[
-          styles.sectionDescription,
-          {
-            color: isDarkMode ? Colors.light : Colors.dark,
-          },
-        ]}
-      >
-        {children}
-      </Text>
-    </View>
-  )
-}
+// Import your native module
+import HelloModule from './specs/NativeHelloModule'
 
 function App(): React.JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark'
+  const [result, setResult] = useState<string>('')
 
-  const backgroundStyle = {
-    backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
+  const testNativeModule = () => {
+    try {
+      // Test all your native functions
+      const sum = HelloModule.addNumbers(42, 58)
+      const platform = HelloModule.getPlatformName()
+      const timestamp = HelloModule.getCurrentTimestamp()
+
+      const testResults = `
+🔢 Math Test: 42 + 58 = ${sum}
+📱 Platform: ${platform}
+⏰ Timestamp: ${new Date(timestamp).toLocaleTimeString()}
+🎉 Native module is working!
+      `.trim()
+
+      setResult(testResults)
+
+    } catch (error) {
+      Alert.alert('Error', `Failed to call native module: ${error}`)
+      setResult('❌ Native module failed')
+    }
   }
 
-  /*
-   * To keep the template simple and small we're adding padding to prevent view
-   * from rendering under the System UI.
-   * For bigger apps the recommendation is to use `react-native-safe-area-context`:
-   * https://github.com/AppAndFlow/react-native-safe-area-context
-   *
-   * You can read more about it here:
-   * https://github.com/react-native-community/discussions-and-proposals/discussions/827
-   */
-  const safePadding = '5%'
-
   return (
-    <View style={backgroundStyle}>
-      <StatusBar
-        barStyle={isDarkMode ? 'light-content' : 'dark-content'}
-        backgroundColor={backgroundStyle.backgroundColor}
-      />
-      <ScrollView style={backgroundStyle}>
-        <View style={{ paddingRight: safePadding }}>
-          <Header />
-        </View>
-        <View
-          style={{
-            backgroundColor: isDarkMode ? Colors.black : Colors.white,
-            paddingHorizontal: safePadding,
-            paddingBottom: safePadding,
-          }}
-        >
-          <Section title="Step One">
-            Edit <Text style={styles.highlight}>App.tsx</Text> to change this
-            screen and then come back to see your edits.
-          </Section>
-          <Section title="See Your Changes">
-            <ReloadInstructions />
-          </Section>
-          <Section title="Debug">
-            <DebugInstructions />
-          </Section>
-          <Section title={'Learn More'}>
-            Read the docs to discover what to do next:
-          </Section>
-          <LearnMoreLinks />
-        </View>
-      </ScrollView>
-    </View>
+    <SafeAreaView style={styles.container}>
+      <View style={styles.content}>
+        <Text style={styles.title}>🦀 React Native + Rust OTel</Text>
+        <Text style={styles.subtitle}>C++ Hello World Test</Text>
+
+        <Button
+          title="Test Native Module"
+          onPress={testNativeModule}
+        />
+
+        {result ? (
+          <View style={styles.resultContainer}>
+            <Text style={styles.resultText}>{result}</Text>
+          </View>
+        ) : (
+          <Text style={styles.placeholder}>
+            Tap the button to test your C++ module!
+          </Text>
+        )}
+      </View>
+    </SafeAreaView>
   )
 }
 
 const styles = StyleSheet.create({
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
+  container: {
+    flex: 1,
+    backgroundColor: '#f5f5f5',
   },
-  sectionTitle: {
+  content: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 20,
+  },
+  title: {
     fontSize: 24,
-    fontWeight: '600',
+    fontWeight: 'bold',
+    marginBottom: 8,
+    textAlign: 'center',
   },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: '400',
+  subtitle: {
+    fontSize: 16,
+    color: '#666',
+    marginBottom: 30,
+    textAlign: 'center',
   },
-  highlight: {
-    fontWeight: '700',
+  resultContainer: {
+    marginTop: 30,
+    padding: 20,
+    backgroundColor: '#e8f5e8',
+    borderRadius: 8,
+    borderWidth: 1,
+    borderColor: '#4CAF50',
+  },
+  resultText: {
+    fontSize: 16,
+    fontFamily: 'monospace',
+    lineHeight: 24,
+  },
+  placeholder: {
+    marginTop: 30,
+    fontSize: 16,
+    color: '#999',
+    textAlign: 'center',
+    fontStyle: 'italic',
   },
 })
 
