@@ -1,0 +1,11 @@
+[package]
+name = "otel-rust-core"
+version = "0.1.0"
+edition = "2024"
+
+[lib]
+name = "otel_rust_core"
+crate-type = ["staticlib"]
+
+[build-dependencies]
+cbindgen = "0.29.0"

@@ -15,7 +15,8 @@
     "jsSrcsDir": "specs",
     "android": {
       "javaPackageName": "com.otelrust.specs"
-    }
+    },
+    "ios": {}
   },
   "dependencies": {
     "react": "19.0.0",

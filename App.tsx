@@ -9,23 +9,17 @@ import {
   Alert,
 } from 'react-native'
 
-// Import your native module
-import HelloModule from './specs/NativeHelloModule'
+import NativeOTel from './specs/NativeOTel'
 
 function App(): React.JSX.Element {
   const [result, setResult] = useState<string>('')
 
   const testNativeModule = () => {
     try {
-      // Test all your native functions
-      const sum = HelloModule.addNumbers(42, 58)
-      const platform = HelloModule.getPlatformName()
-      const timestamp = HelloModule.getCurrentTimestamp()
+      const sum = NativeOTel.addNumbers(42, 122)
 
       const testResults = `
-🔢 Math Test: 42 + 58 = ${sum}
-📱 Platform: ${platform}
-⏰ Timestamp: ${new Date(timestamp).toLocaleTimeString()}
+🔢 Math Test: 42 + 122 = ${sum}
 🎉 Native module is working!
       `.trim()
 

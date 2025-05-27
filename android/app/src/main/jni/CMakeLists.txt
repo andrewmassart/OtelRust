@@ -1,13 +1,21 @@
 cmake_minimum_required(VERSION 3.13)
-
-# Define the library name here.
 project(appmodules)
 
-# This file includes all the necessary to let you build your React Native application
+find_package(ReactAndroid REQUIRED CONFIG)
+
 include(${REACT_ANDROID_DIR}/cmake-utils/ReactNative-application.cmake)
 
-# Define where the additional source code lives. We need to crawl back the jni, main, src, app, android folders
-target_sources(${CMAKE_PROJECT_NAME} PRIVATE ../../../../../shared/NativeHelloModule.cpp)
+target_sources(${CMAKE_PROJECT_NAME} PRIVATE ../../../../../shared/NativeOTel.cpp)
 
-# Define where CMake can find the additional header files. We need to crawl back the jni, main, src, app, android folders
 target_include_directories(${CMAKE_PROJECT_NAME} PUBLIC ../../../../../shared)
+target_include_directories(${CMAKE_PROJECT_NAME} PUBLIC ../../build/generated/source/codegen/jni)
+
+# Link Rust library
+cmake_path(SET RUST_LIB_PATH ${CMAKE_CURRENT_SOURCE_DIR}/../jniLibs/${ANDROID_ABI}/libotel_rust_core.a NORMALIZE)
+add_library(otel_rust_core STATIC IMPORTED)
+set_target_properties(otel_rust_core PROPERTIES IMPORTED_LOCATION ${RUST_LIB_PATH})
+
+target_link_libraries(${CMAKE_PROJECT_NAME}
+    otel_rust_core
+    react_codegen_AppSpecs
+)
